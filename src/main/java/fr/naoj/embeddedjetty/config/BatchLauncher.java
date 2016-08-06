@@ -35,14 +35,14 @@ public class BatchLauncher {
     
     @Scheduled(cron = "${excel.to.xml.job.cron}")
     void launchExcelFileToXmlJob() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
-        LOG.info("Starting excelFileToDatabase job");
+        LOG.info("Starting job");
 
-        jobLauncher.run(job, newExecution());
+        jobLauncher.run(job, createJobParameters());
 
-        LOG.info("Stopping excelFileToDatabase job");
+        LOG.info("Stopping job");
     }
 
-    private JobParameters newExecution() {
+    private JobParameters createJobParameters() {
         Map<String, JobParameter> parameters = new HashMap<>();
 
         JobParameter parameter = new JobParameter(new Date());

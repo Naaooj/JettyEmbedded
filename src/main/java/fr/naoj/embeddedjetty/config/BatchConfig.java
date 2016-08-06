@@ -1,7 +1,5 @@
 package fr.naoj.embeddedjetty.config;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.springframework.batch.core.Job;
@@ -15,7 +13,8 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.FileSystemResource;
 
 import fr.naoj.embeddedjetty.dto.XlsDto;
 import fr.naoj.embeddedjetty.excel.PoiItemReader;
@@ -25,14 +24,10 @@ import fr.naoj.embeddedjetty.excel.impl.RowMapperImpl;
 public class BatchConfig {
 
 	@Bean
+	@Scope("prototype")
 	ItemReader<XlsDto> reader() {
 		ItemReader<XlsDto> reader;
-		try {
-			reader = new PoiItemReader<XlsDto>(new InputStreamResource(new FileInputStream("poi_test.xlsx"))).setRowMapper(new RowMapperImpl<XlsDto>());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			reader = null;
-		}
+		reader = new PoiItemReader<XlsDto>(new FileSystemResource("poi_test.xlsx")).setRowMapper(new RowMapperImpl<XlsDto>());
 		return reader;
 	}
 	

@@ -16,6 +16,7 @@ import org.springframework.batch.item.file.ResourceAwareItemReaderItemStream;
 import org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
+import org.springframework.util.ClassUtils;
 
 import fr.naoj.embeddedjetty.excel.impl.RowSetFactoryImpl;
 
@@ -34,6 +35,7 @@ public class PoiItemReader<T> extends AbstractItemCountingItemStreamItemReader<T
     
     public PoiItemReader(Resource resource) {
     	super();
+    	setName(ClassUtils.getShortName(getClass()));
     	setResource(resource);
     }
 	
@@ -58,6 +60,10 @@ public class PoiItemReader<T> extends AbstractItemCountingItemStreamItemReader<T
         // lack this method.
         if (workbook instanceof Closeable) {
             this.workbook.close();
+        }
+        
+        if (workbookStream instanceof PushbackInputStream) {
+//        	((PushbackInputStream) workbookStream).
         }
 
         if (workbookStream != null) {
